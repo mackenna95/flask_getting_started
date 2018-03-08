@@ -7,7 +7,7 @@ def hello():
   """
   Returns the string "Hello, world" to the caller
   """
-  return "Hello, world", 200 # returns 201 error code to the caller
+  return "Hello, world", 200
   
 @app.route("/name", methods=["GET"])
 def getname():
@@ -17,7 +17,7 @@ def getname():
   name = {
     "name": "Mackenna",
   }
-  return jsonify(name) # respond to the API caller with a JSON representation of data. jsonify is important, as it sets response headers that indicate the respose is in JSON as well
+  return jsonify(name), 200
 
 @app.route("/hello/<name>", methods=["GET"])
 def gethello(name):
@@ -31,8 +31,7 @@ def gethello(name):
   hello_name = {
     "message": message,
   }
-  return jsonify(hello_name) 
-
+  return jsonify(hello_name), 200
 
 @app.route("/sum", methods=["POST"])
 def sum():
