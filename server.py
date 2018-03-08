@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import math
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -19,26 +20,36 @@ def getname():
   return jsonify(name) # respond to the API caller with a JSON representation of data. jsonify is important, as it sets response headers that indicate the respose is in JSON as well
 
 @app.route("/hello/<name>", methods=["GET"])
-def gethello(<name>):
+def gethello(name):
   """
   Returns the hello_name dictionary below to the caller as JSON
   """
+  message = []
+  message.append("Hello there ")
+  message.append(name)
+  message = ''.join(message)
   hello_name = {
-    "message": "Hello there" name,
+    "message": message,
   }
   return jsonify(hello_name) 
 
 
 @app.route("/sum", methods=["POST"])
 def sum():
+  # """
+  # Returns sum of a and b to the caller
+  # """
   r = request.get_json() # parses the POST request body as JSON
-  s = r["a"] + r["b"] # adds JSON dict parameter "a" and "b" together
-  return s, 200
+  s = r["a"][0] + r["b"][0] # adds JSON dict parameter "a" and "b" together
+  return jsonify(s), 200
   
 @app.route("/distance", methods=["POST"])
 def distance():
+  """
+  Returns distance between a and b to the caller as JSON
+  """
   r = request.get_json() # parses the POST request body as JSON
-  dist = r["a"]*r["a"] + r["b"]*r["b"] # adds JSON dict parameter "a" and "b" together
+  dist = math.sqrt((r["a"][0]-r["b"][0])*(r["a"][0]-r["b"][0])+(r["a"][1]-r["b"][1])*(r["a"][1]-r["b"][1]))
   dist_return = {
     "distance": dist,
     "a": r["a"],
